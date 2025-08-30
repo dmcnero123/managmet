@@ -1,0 +1,270 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Dashboard de Ventas de Ropa</title>
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<style>
+		body {
+			font-family: 'Roboto', Arial, sans-serif;
+			background: linear-gradient(120deg, #f4f6f8 60%, #c3aed6 100%);
+			margin: 0;
+			padding: 0;
+		}
+		.layout {
+			display: flex;
+			min-height: 100vh;
+		}
+		.sidebar {
+			width: 220px;
+			background: linear-gradient(180deg, #ffb347 60%, #6a4c93 100%);
+			color: #fff;
+			padding: 32px 0 0 0;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			box-shadow: 2px 0 8px rgba(0,0,0,0.08);
+		}
+		.sidebar h2 {
+			font-size: 1.5em;
+			margin-bottom: 32px;
+			font-weight: 700;
+			letter-spacing: 1px;
+		}
+		.menu {
+			width: 100%;
+		}
+		.menu ul {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+		}
+		.menu li {
+			padding: 16px 32px;
+			font-size: 1.1em;
+			cursor: pointer;
+			transition: background 0.2s, color 0.2s;
+		}
+		.menu li:nth-child(1) { background: #ffb347; color: #fff; }
+		.menu li:nth-child(2) { background: #6dd5ed; color: #fff; }
+		.menu li:nth-child(3) { background: #f7797d; color: #fff; }
+		.menu li:nth-child(4) { background: #43cea2; color: #fff; }
+		.menu li:nth-child(5) { background: #c3aed6; color: #fff; }
+		.menu li:nth-child(6) { background: #6a4c93; color: #fff; }
+		.menu li:hover {
+			filter: brightness(0.9);
+		}
+		.container {
+			flex: 1;
+			max-width: 1200px;
+			margin: 40px auto;
+			background: #fff;
+			border-radius: 10px;
+			box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+			padding: 32px;
+		}
+		h1 {
+			color: #6a4c93;
+			margin-bottom: 24px;
+		}
+		.stats {
+			display: flex;
+			gap: 32px;
+			margin-bottom: 32px;
+		}
+		.card {
+			border-radius: 8px;
+			padding: 24px;
+			flex: 1;
+			text-align: center;
+			color: #fff;
+			box-shadow: 0 2px 8px rgba(106,76,147,0.08);
+		}
+		.card:nth-child(1) {
+			background: linear-gradient(120deg, #ffb347 60%, #ffcc80 100%);
+			color: #6a4c93;
+		}
+		.card:nth-child(2) {
+			background: linear-gradient(120deg, #6dd5ed 60%, #2193b0 100%);
+			color: #fff;
+		}
+		.card:nth-child(3) {
+			background: linear-gradient(120deg, #43cea2 60%, #185a9d 100%);
+			color: #fff;
+		}
+		.card h2 {
+			margin: 0 0 8px 0;
+			font-size: 2.2em;
+		}
+		.card p {
+			margin: 0;
+			color: #fff;
+		}
+		.chart-section {
+			margin: 32px 0;
+			background: linear-gradient(90deg, #f7797d 0%, #fbd786 100%);
+			border-radius: 8px;
+			padding: 24px;
+			box-shadow: 0 2px 8px rgba(106,76,147,0.08);
+		}
+		.chart-section h2 {
+			color: #185a9d;
+			margin-bottom: 16px;
+		}
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			margin-top: 24px;
+		}
+		th, td {
+			padding: 12px 8px;
+			border-bottom: 1px solid #e2e8f0;
+			text-align: left;
+		}
+		th {
+			background: #6dd5ed;
+			color: #fff;
+		}
+		tr:hover {
+			background: #f7fafc;
+		}
+		.footer {
+			text-align: center;
+			margin-top: 40px;
+			color: #a0aec0;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="layout">
+		<aside class="sidebar">
+			<h2>Menú</h2>
+			<nav class="menu">
+				<ul>
+					<li>Dashboard</li>
+					<li>Ventas</li>
+					<li>Productos</li>
+					<li>Clientes</li>
+					<li>Reportes</li>
+					<li>Configuración</li>
+				</ul>
+			</nav>
+		</aside>
+		<main class="container">
+			<h1>Dashboard de Ventas de Ropa</h1>
+			<div class="stats">
+				<div class="card">
+					<h2>$12,500</h2>
+					<p>Ventas Totales</p>
+				</div>
+				<div class="card">
+					<h2>320</h2>
+					<p>Productos Vendidos</p>
+				</div>
+				<div class="card">
+					<h2>8</h2>
+					<p>Pedidos Pendientes</p>
+				</div>
+			</div>
+			<section class="chart-section">
+				<h2>Ventas por Categoría</h2>
+				<canvas id="ventasChart" height="80"></canvas>
+			</section>
+			<h2>Últimas Ventas</h2>
+			<table>
+				<thead>
+					<tr>
+						<th>Fecha</th>
+						<th>Producto</th>
+						<th>Categoría</th>
+						<th>Cantidad</th>
+						<th>Total</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>2025-08-28</td>
+						<td>Camiseta Básica</td>
+						<td>Hombre</td>
+						<td>2</td>
+						<td>$400</td>
+					</tr>
+					<tr>
+						<td>2025-08-28</td>
+						<td>Vestido Verano</td>
+						<td>Mujer</td>
+						<td>1</td>
+						<td>$350</td>
+					</tr>
+					<tr>
+						<td>2025-08-27</td>
+						<td>Pantalón Jeans</td>
+						<td>Hombre</td>
+						<td>1</td>
+						<td>$500</td>
+					</tr>
+					<tr>
+						<td>2025-08-27</td>
+						<td>Blusa Casual</td>
+						<td>Mujer</td>
+						<td>3</td>
+						<td>$900</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="footer">
+				&copy; 2025 Dashboard de Ventas de Ropa
+			</div>
+		</main>
+	</div>
+	<script>
+		const ctx = document.getElementById('ventasChart').getContext('2d');
+		new Chart(ctx, {
+			type: 'bar',
+			data: {
+				labels: ['Hombre', 'Mujer', 'Niños'],
+				datasets: [{
+					label: 'Ventas ($)',
+					data: [5400, 6500, 600],
+					backgroundColor: [
+						'rgba(255,179,71,0.8)', // naranja
+						'rgba(109,213,237,0.8)', // azul claro
+						'rgba(67,206,162,0.8)'   // verde
+					],
+					borderRadius: 6
+				}]
+			},
+			options: {
+				responsive: true,
+				plugins: {
+					legend: {
+						display: false
+					},
+					title: {
+						display: false
+					}
+				},
+				scales: {
+					y: {
+						beginAtZero: true,
+						ticks: {
+							color: '#185a9d',
+							font: { weight: 'bold' }
+						}
+					},
+					x: {
+						ticks: {
+							color: '#185a9d',
+							font: { weight: 'bold' }
+						}
+					}
+				}
+			}
+		});
+	</script>
+</body>
+</html>
